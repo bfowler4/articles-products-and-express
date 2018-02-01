@@ -24,10 +24,11 @@ router.get(`/`, (req, res) => {
   return res.send(`<h1> 404 NOT FOUND</h1>`);
 })
 .post(`/`, (req, res) => {
-  if (productsDatabase.insert(req.body)) {
-    return res.redirect(`/products`);
-  }
-  return res.render(`templates/products/new`, { error: true });
+  // if (productsDatabase.insert(req.body)) {
+  //   return res.redirect(`/products`);
+  // }
+  // return res.render(`templates/products/new`, { error: true });
+
 })
 .put(`/:id`, (req, res) => {
   if (!productsDatabase.getByKey(`id`, req.params.id)) {

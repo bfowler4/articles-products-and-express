@@ -35,7 +35,7 @@ function getByKey(key, value) {
 }
 
 function insert(article) {
-  if (isArticleValidForInsert(article)) {
+  if (!getByKey(`title`, article.title)) {
     article.urlTitle = encodeURIComponent(article.title);
     articlesArray.push(article);
     return true;
@@ -65,46 +65,4 @@ function remove(title) {
     }
   }
   return false;
-}
-
-
-function isArticleValidForInsert(article) {
-  let keys = Object.keys(article);
-  if (keys.length !== 3) {
-    return false;
-  }
-  if (!(article.title && article.author && article.body)) {
-    return false;
-  }
-
-  if (getByKey(`title`, article.title)) {
-    return false;
-  }
-
-  return true;
-}
-
-function isArticleValidForEdit(article) {
-  let keys = Object.keys(article);
-  if (keys.length > 4) {
-    console.log(`too many keys`)
-    return false;
-  }
-
-  if (!getByKey(`title`, article.currentTitle)) {
-    console.log(`title doesnt exist`)
-    return false;
-  }
-
-  for (let key of availableKeys) {
-    if (article.hasOwnProperty(key) && !article[key]) {
-      return false;
-    }
-  }
-
-  if (article.hasOwnProperty(`title`) && getByKey(`title`, article.title)) {
-    return false;
-  }
-
-  return true;
 }
