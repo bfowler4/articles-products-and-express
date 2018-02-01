@@ -3,13 +3,21 @@ module.exports = {
   isArticleValidForEdit
 };
 
+const availableKeys = [`currentTitle`, `title`, `author`, `body`];
+
 function isArticleValidForInsert(article) {
   let keys = Object.keys(article);
   if (keys.length !== 3) {
     return `Error: Insufficient number of keys. Article was not added.`;
   }
-  if (!(article.title && article.author && article.body)) {
-    return `Error: Received a blank value. Article was not added.`;
+
+  for (let key of keys) {
+    if (!availableKeys.includes(key)) {
+      return `Error: Received invalid key '${key}'. Article was not added.`;
+    }
+    if (!article[key]) {
+      return `Error: Received blank key on ${key}. Article was not added.`;
+    }
   }
 
   return true;
