@@ -25,20 +25,30 @@ router.get(`/`, (req, res) => {
 })
 .post(`/`, (req, res) => {
   if (productsDatabase.insert(req.body)) {
-    return res.render(`templates/products/index`, { data: productsDatabase.getAll() });
+    return res.redirect(`/products`);
   }
-  return res.send(`ERROR WASN'T ABLE TO INSERT PRODUCT`);
+  return res.render(`templates/products/new`, { error: true });
 })
 .put(`/:id`, (req, res) => {
+  if (!productsDatabase.getByKey(`id`, req.params.id)) {
+    return res.send(`<h1>404 NOT FOUND</h1>`);
+  }
+
   let product = productsDatabase.edit(req.body);
   if (product) {
-    return res.render(`templates/products/product`, productsDatabase.getByKey(`id`, req.body.id));
+    return res.redirect(`/products/${product.id}`);
   }
-  return res.send(`ERROR WASN'T ABLE TO EDIT PRODUCT`);
+  if (product = productsDatabase.getByKey(`id`, req.body.id)) {
+    product = Object.assign({}, product);
+    product.error = true;
+    return res.render(`templates/products/edit`, product);
+  } else {
+    return res.send(`<h1>404 NOT FOUND</h1>`);
+  }
 })
 .delete(`/:id`, (req, res) => {
   if (productsDatabase.remove(req.params.id)) {
-    return res.render(`templates/products/index`, {data: productsDatabase.getAll() });
+    return res.redirect(`/products`);
   }
-  return res.send(`ERROR WASN'T ABLE TO DELETE PRODUCT`);
+  return res.send(`<h1>404 NOT FOUND</h1>`);
 });

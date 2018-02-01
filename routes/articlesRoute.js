@@ -25,21 +25,27 @@ router.get(`/`, (req, res) => {
 })
 .post(`/`, (req, res) => {
   if (articlesDatabase.insert(req.body)) {
-    return res.render(`templates/articles/index`, { data: articlesDatabase.getAll() });
+    return res.redirect(`/articles`);
   }
-  return res.send(`ERROR WASN'T ABLE TO INSERT ARTICLE`);
+  return res.render(`templates/articles/new`, { error: true });
 })
 .put(`/:title`, (req, res) => {
   req.body.currentTitle = req.params.title;
   let article = articlesDatabase.edit(req.body);
   if (article) {
-    return res.render(`templates/articles/article`, article);
+    return res.redirect(`/articles/${article.title}`);
   }
-  return res.send(`ERROR COULD NOT EDIT ARTICLE`);
+  if (article = articlesDatabase.getByKey(`title`, req.params.title)) {
+    article = Object.assign({}, article);
+    article.error = true;
+    return res.render(`templates/articles/edit`, article);
+  } else {
+    return res.send(`<h1>404 NOT FOUND</h1>`);
+  }
 })
 .delete(`/:title`, (req, res) => {
   if (articlesDatabase.remove(req.params.title)) {
     return res.render(`templates/articles/index`, { data: articlesDatabase.getAll() });
   }
-  return res.send(`ERROR WAS NOT ABLE TO DELETE ARTICLE`);
+  return res.send(`<h1>404 NOT FOUND</h1>`);
 });
