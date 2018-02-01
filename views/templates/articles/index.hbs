@@ -1,0 +1,12 @@
+<h1>Articles List</h1>
+
+<ol class='article_list'>
+  {{#each data}}
+  <li>{{title}}</li>
+  <ul>
+    <li>Author: {{author}}</li>
+    <li>URL: {{urlTitle}}</li>
+    <li>{{body}}</li>
+  </ul>
+  {{/each}}
+</ol>
