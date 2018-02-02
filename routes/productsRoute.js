@@ -15,14 +15,14 @@ router.get(`/`, (req, res) => {
   if (product) {
     return res.render(`templates/products/product`, product);
   }
-  return res.send(`<h1>404 NOT FOUND</h1>`);
+  return res.status(404).render(`templates/404`);
 })
 .get(`/:id/edit`, (req, res) => {
   let product = productsDatabase.getByKey(`id`, req.params.id);
   if (product) {
     return res.render(`templates/products/edit`, product);
   }
-  return res.send(`<h1> 404 NOT FOUND</h1>`);
+  return res.status(404).render(`templates/404`);
 })
 .post(`/`, (req, res) => {
   let validation = isProductValidForInsert(req.body);
@@ -47,12 +47,12 @@ router.get(`/`, (req, res) => {
     product.error = validation;
     res.render(`templates/products/edit`, product);
   } else {
-    return res.send(`<h1>404 NOT FOUND</h1>`);
+    return res.status(404).render(`templates/404`);
   }
 })
 .delete(`/:id`, (req, res) => {
   if (productsDatabase.remove(req.params.id)) {
     return res.redirect(`/products`);
   }
-  return res.send(`<h1>404 NOT FOUND</h1>`);
+  return res.status(404).render(`templates/404`);
 });

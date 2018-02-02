@@ -15,14 +15,14 @@ router.get(`/`, (req, res) => {
   if (article) {
     return res.render(`templates/articles/article`, article);
   }
-  return res.send(`<h1>404 NOT FOUND</h1>`);
+  return res.status(404).render(`templates/404`);
 })
 .get(`/:title/edit`, (req, res) => {
   let article = articlesDatabase.getByKey(`title`, req.params.title);
   if (article) {
     return res.render(`templates/articles/edit`, article);
   }
-  return res.send(`<h1>404 NOT FOUND</h1>`);
+  return res.status(404).render(`templates/404`);
 })
 .post(`/`, (req, res) => {
   let validation = isArticleValidForInsert(req.body);
@@ -48,11 +48,11 @@ router.get(`/`, (req, res) => {
     article.error = validation;
     return res.render(`templates/articles/edit`, article);
   }
-  return res.send(`<h1>404 NOT FOUND</h1>`);
+  return res.status(404).render(`templates/404`);
 })
 .delete(`/:title`, (req, res) => {
   if (articlesDatabase.remove(req.params.title)) {
     return res.redirect(`/articles`);
   }
-  return res.send(`<h1>404 NOT FOUND</h1>`);
+  return res.status(404).render(`templates/404`);
 });

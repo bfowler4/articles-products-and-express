@@ -2,7 +2,12 @@
 
 <ol class='article_list'>
   {{#each data}}
-  <li>{{title}}</li>
+  <li>{{title}}
+    <a href='http://localhost:8080/articles/{{title}}/edit'><button>edit</button></a>
+    <form action="/articles/{{title}}?_method=DELETE" method='post'>
+    <input type="submit" value="delete"/>
+    </form>
+  </li>
   <ul>
     <li>Author: {{author}}</li>
     <li>URL: {{urlTitle}}</li>

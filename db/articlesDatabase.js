@@ -21,9 +21,6 @@ articlesArray.push({
 });
 
 function getAll() {
-  articlesArray.forEach((curr) => {
-    console.log(curr);
-  });
   return articlesArray.slice(0);
 }
 
