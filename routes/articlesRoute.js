@@ -37,7 +37,6 @@ router.get(`/`, (req, res) => {
 .put(`/:title`, (req, res) => {
   let article;
   if (article = articlesDatabase.getByKey(`title`, req.params.title)) {
-    article = Object.assign({}, article);
     req.body.currentTitle = req.params.title;
     let validation = isArticleValidForEdit(req.body);
     if (validation === true) {

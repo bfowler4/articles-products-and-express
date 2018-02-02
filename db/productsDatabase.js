@@ -23,10 +23,19 @@ productsArray.push({
 
 
 function getAll() {
-  return productsArray;
+  return productsArray.slice(0);
 }
 
 function getByKey(key, value) {
+  for (let product of productsArray) {
+    if (product[key] == value) {
+      return Object.assign({}, product);
+    }
+  }
+  return false;
+}
+
+function _getByKey(key, value) {
   for (let product of productsArray) {
     if (product[key] == value) {
       return product;
@@ -41,15 +50,19 @@ function insert(product) {
     productsArray.push(product);
     return true;
   }
-  return `Error: A product with the name '${product.name}' already exists. Product was not added.`;
+  return `Error: A product with the name '${product.name}' already exists in the database. Product was not added.`;
 }
 
 function edit(product) {
   if (!getByKey(`id`, product.id)) {
-    return `Error: Product with given ID does not exist. Product was not edited.`;
+    return `Error: Product with given ID '${product.id}' does not exist. Product was not edited.`;
   }
 
-  let productToEdit = getByKey(`id`, product.id);
+  if (product.hasOwnProperty(`name`) && getByKey(`name`, product.name)) {
+    return `Error: Product name can't be changed to '${product.name}'. A product with that name already exists. Product was not edited.`;
+  }
+
+  let productToEdit = _getByKey(`id`, product.id);
   for (let key of Object.keys(product)) {
     if (key !== `id`) {
       productToEdit[key] = product[key];

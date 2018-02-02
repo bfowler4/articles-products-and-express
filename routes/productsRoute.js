@@ -37,7 +37,6 @@ router.get(`/`, (req, res) => {
 .put(`/:id`, (req, res) => {
   let product;
   if (product = productsDatabase.getByKey(`id`, req.params.id)) {
-    product = Object.assign({}, product);
     let validation = isProductValidForEdit(req.body);
     if (validation === true) {
       validation = productsDatabase.edit(req.body);
