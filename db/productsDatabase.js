@@ -8,7 +8,6 @@ module.exports = {
 
 const productsArray = [];
 let idCounter = 0;
-const availableKeys = [`name`, `price`, `inventory`, `id`];
 productsArray.push({
   id: idCounter++,
   name: `banana`,
@@ -37,25 +36,26 @@ function getByKey(key, value) {
 }
 
 function insert(product) {
-  if (isProductValidForInsert(product)) {
+  if (!getByKey(`name`, product.name)) {
     product.id = idCounter++;
     productsArray.push(product);
     return true;
   }
-  return false;
+  return `Error: A product with the name '${product.name}' already exists. Product was not added.`;
 }
 
 function edit(product) {
-  if (isProductValidForEdit(product)) {
-    let productToEdit = getByKey(`id`, product.id);
-    for (let key of Object.keys(product)) {
-      if (key !== `id`) {
-        productToEdit[key] = product[key];
-      }
-    }
-    return productToEdit;
+  if (!getByKey(`id`, product.id)) {
+    return `Error: Product with given ID does not exist. Product was not edited.`;
   }
-  return false;
+
+  let productToEdit = getByKey(`id`, product.id);
+  for (let key of Object.keys(product)) {
+    if (key !== `id`) {
+      productToEdit[key] = product[key];
+    }
+  }
+  return true;
 }
 
 function remove(id) {

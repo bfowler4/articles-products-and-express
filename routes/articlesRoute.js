@@ -27,30 +27,33 @@ router.get(`/`, (req, res) => {
 .post(`/`, (req, res) => {
   let validation = isArticleValidForInsert(req.body);
   if (validation === true) {
-    if (articlesDatabase.insert(req.body)) {
+    validation = articlesDatabase.insert(req.body);
+    if (validation === true) {
       return res.redirect(`/articles`);
     }
-    return res.render(`templates/articles/new`, { error: `Error: Article already exists in database. Article was not added.` });
   }
   return res.render(`templates/articles/new`, { error: validation });
 })
 .put(`/:title`, (req, res) => {
-  req.body.currentTitle = req.params.title;
-  let article = articlesDatabase.edit(req.body);
-  if (article) {
-    return res.redirect(`/articles/${article.title}`);
-  }
+  let article;
   if (article = articlesDatabase.getByKey(`title`, req.params.title)) {
     article = Object.assign({}, article);
-    article.error = true;
+    req.body.currentTitle = req.params.title;
+    let validation = isArticleValidForEdit(req.body);
+    if (validation === true) {
+      validation = articlesDatabase.edit(req.body);
+      if (validation === true) {
+        return res.redirect(`/articles/${req.body.title}`);
+      }
+    }
+    article.error = validation;
     return res.render(`templates/articles/edit`, article);
-  } else {
-    return res.send(`<h1>404 NOT FOUND</h1>`);
   }
+  return res.send(`<h1>404 NOT FOUND</h1>`);
 })
 .delete(`/:title`, (req, res) => {
   if (articlesDatabase.remove(req.params.title)) {
-    return res.render(`templates/articles/index`, { data: articlesDatabase.getAll() });
+    return res.redirect(`/articles`);
   }
   return res.send(`<h1>404 NOT FOUND</h1>`);
 });

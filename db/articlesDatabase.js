@@ -7,7 +7,6 @@ module.exports = {
 }
 
 const articlesArray = [];
-const availableKeys = [`title`, `author`, `body`];
 articlesArray.push({
   title: `the grinch`,
   author: `brandon fowler`,
@@ -40,21 +39,28 @@ function insert(article) {
     articlesArray.push(article);
     return true;
   }
-  return false;
+  return `Error: Article already exists in database. Article was not added.`;
 }
 
 function edit(article) {
-  if (isArticleValidForEdit(article)) {
-    let articleToEdit = getByKey(`title`, article.currentTitle);
-    for (let key of Object.keys(article)) {
+  if (!getByKey(`title`, article.currentTitle)) {
+    return `Error: Article does not exist. Article was not edited.`;
+  }
+
+  if (article.hasOwnProperty(`title`) && getByKey(`title`, article.title)) {
+    return `Error: Article title can't be changed to '${article.title}'. An article with that title already exists. Article was not edited.`;
+  }
+
+  let articleToEdit = getByKey(`title`, article.currentTitle);
+  for (let key of Object.keys(article)) {
+    if (key !== `currentTitle`) {
       articleToEdit[key] = article[key];
       if (key === `title`) {
         articleToEdit.urlTitle = encodeURIComponent(articleToEdit.title);
       }
     }
-    return articleToEdit;
   }
-  return false;
+  return true;
 }
 
 function remove(title) {

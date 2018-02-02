@@ -3,60 +3,53 @@ module.exports = {
   isProductValidForEdit
 };
 
+const availableKeys = [`name`, `price`, `inventory`];
+
 function isProductValidForInsert(product) {
   let keys = Object.keys(product);
   if (keys.length !== 3) {
-    return `Error: Received insufficient amount of keys.`;
-  }
-  if (!(product.name && product.price && product.inventory)) {
-    return `Error: Received a blank value`;
+    return `Error: Insufficient number of keys. Product was not added.`;
   }
 
-  if (product.price.match(/[^0-9]/) !== null && product.inventory.match(/[^0-9]/) !== null) {
-    return `Error: Product price and inventory must only consist of numbers.`;
+  for (let key of keys) {
+    if (!availableKeys.includes(key)) {
+      return `Error: Received invalid key '${key}'. Product was not added.`;
+    }
+    if (!product[key]) {
+      return `Error: Received blank value on '${key}'. Article was not added`;
+    }
+    if (key === `price` || key === `inventory`) {
+      if (product[key].match(/[^0-9]/) !== null) {
+        return `Error: '${key}' must only consist of numbers. Product was not added.`;
+      }
+    }
   }
-
-  //MOVE TO DATABASE
-  // if (getByKey(`name`, product.name)) {
-  //   return false;
-  // }
 
   return true;
 }
 
 function isProductValidForEdit(product) {
   let keys = Object.keys(product);
-  if (keys.length > 4) {
-    return false;
+  if (keys.length < 2) {
+    return `Error: No keys to edit were provided. Product was not edited.`
   }
 
-  if (!getByKey(`id`, product.id)) {
-    console.log(`id failed`);
-    return false;
+  if (!keys.includes(`id`)) {
+    return `Error: Missing 'id' key. Product was not edited.`
   }
 
-  if (!keys.every(curr => availableKeys.includes(curr))) {
-    console.log(`one of the keys failed`);
-    return false;
-  }
-
-  if (keys.includes(`price`)) {
-    if (!(product.price && product.price.match(/[^0-9]/) === null)) {
-      return false;
+  for (let key of keys) {
+    if (!availableKeys.includes(key) && key !== `id`) {
+      return `Error: Received invalid key '${key}'. Product was not edited.`;
+    }
+    if (!product[key]) {
+      return `Error: Received blank value on '${key}'. Article was not edited`;
+    }
+    if (key === `price` || key === `inventory`) {
+      if (product[key].match(/[^0-9]/) !== null) {
+        return `Error: '${key}' must only consist of numbers. Product was not edited.`;
+      }
     }
   }
-
-  if (keys.includes(`inventory`)) {
-    if (!(product.inventory && product.inventory.match(/[^0-9]/) === null)) {
-      return false;
-    }
-  }
-
-  if (keys.includes(`name`)) {
-    if (!product.name) {
-      return false;
-    }
-  }
-
   return true;
 }

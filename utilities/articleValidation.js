@@ -16,7 +16,7 @@ function isArticleValidForInsert(article) {
       return `Error: Received invalid key '${key}'. Article was not added.`;
     }
     if (!article[key]) {
-      return `Error: Received blank key on ${key}. Article was not added.`;
+      return `Error: Received blank value on '${key}'. Article was not added.`;
     }
   }
 
@@ -25,23 +25,17 @@ function isArticleValidForInsert(article) {
 
 function isArticleValidForEdit(article) {
   let keys = Object.keys(article);
-  if (keys.length > 4) {
-    return `Error: Insufficient number of keys. Article was not added.`;
+  if (keys.length === 1) {
+    return `Error: No keys were receieved. Article was not edited.`;
   }
 
-  if (!getByKey(`title`, article.currentTitle)) {
-    console.log(`title doesnt exist`)
-    return false;
-  }
-
-  for (let key of availableKeys) {
-    if (article.hasOwnProperty(key) && !article[key]) {
-      return false;
+  for (let key of keys) {
+    if (!availableKeys.includes(key)) {
+      return `Error: Received invalid key '${key}'. Article was not edited.`;
     }
-  }
-
-  if (article.hasOwnProperty(`title`) && getByKey(`title`, article.title)) {
-    return false;
+    if (!article[key]) {
+      return `Error: Received blank value on '${key}'. Article was not edited.`;
+    }
   }
 
   return true;

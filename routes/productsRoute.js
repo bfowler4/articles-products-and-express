@@ -1,6 +1,7 @@
 const express = require(`express`);
 const router = express.Router();
 const productsDatabase = require(`../db/productsDatabase`);
+const { isProductValidForInsert, isProductValidForEdit } = require(`../utilities/productValidation`);
 module.exports = router;
 
 router.get(`/`, (req, res) => {
@@ -24,25 +25,28 @@ router.get(`/`, (req, res) => {
   return res.send(`<h1> 404 NOT FOUND</h1>`);
 })
 .post(`/`, (req, res) => {
-  // if (productsDatabase.insert(req.body)) {
-  //   return res.redirect(`/products`);
-  // }
-  // return res.render(`templates/products/new`, { error: true });
-
+  let validation = isProductValidForInsert(req.body);
+  if (validation === true) {
+    validation = productsDatabase.insert(req.body);
+    if (validation === true) {
+      return res.redirect(`/products`);
+    }
+  }
+  res.render(`templates/products/new`, { error: validation });
 })
 .put(`/:id`, (req, res) => {
-  if (!productsDatabase.getByKey(`id`, req.params.id)) {
-    return res.send(`<h1>404 NOT FOUND</h1>`);
-  }
-
-  let product = productsDatabase.edit(req.body);
-  if (product) {
-    return res.redirect(`/products/${product.id}`);
-  }
-  if (product = productsDatabase.getByKey(`id`, req.body.id)) {
+  let product;
+  if (product = productsDatabase.getByKey(`id`, req.params.id)) {
     product = Object.assign({}, product);
-    product.error = true;
-    return res.render(`templates/products/edit`, product);
+    let validation = isProductValidForEdit(req.body);
+    if (validation === true) {
+      validation = productsDatabase.edit(req.body);
+      if (validation === true) {
+        return res.redirect(`/products/${req.body.id}`);
+      }
+    }
+    product.error = validation;
+    res.render(`templates/products/edit`, product);
   } else {
     return res.send(`<h1>404 NOT FOUND</h1>`);
   }
