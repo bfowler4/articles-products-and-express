@@ -1,58 +1,84 @@
 const express = require(`express`);
 const router = express.Router();
-const articlesDatabase = require(`../db/articlesDatabase`);
-const { isArticleValidForInsert, isArticleValidForEdit } = require(`../utilities/serverModules`);
+const knex = require('../knex/knex.js');
+const { findArticle, validateArticleForInsert, validateArticleForEdit } = require(`../utilities/serverModules`);
 module.exports = router;
 
 router.get(`/`, (req, res) => {
-  return res.render(`templates/articles/index`, { data: articlesDatabase.getAll() });
+  knex.select().from(`articles`)
+  .then((articles) => {
+    return res.render(`templates/articles/index`, { data: articles });
+  })
+  .catch((err) => {
+    return res.status(400).json({ message: err.message });
+  });
 })
 .get(`/new`, (req, res) => {
   return res.render(`templates/articles/new`);
 })
 .get(`/:title`, (req, res) => {
-  let article = articlesDatabase.getByKey(`title`, req.params.title);
-  if (article) {
+  return findArticle(req.params.title)
+  .then((article) => {
     return res.render(`templates/articles/article`, article);
-  }
-  return res.status(404).render(`templates/404`);
+  })
+  .catch((err) => {
+    return res.status(404).render(`templates/404`);
+  });
 })
 .get(`/:title/edit`, (req, res) => {
-  let article = articlesDatabase.getByKey(`title`, req.params.title);
-  if (article) {
+  return findArticle(req.params.title)
+  .then((article) => {
     return res.render(`templates/articles/edit`, article);
-  }
-  return res.status(404).render(`templates/404`);
+  })
+  .catch((err) => {
+    return res.status(404).render(`templates/404`);
+  });
 })
 .post(`/`, (req, res) => {
-  let validation = isArticleValidForInsert(req.body);
-  if (validation === true) {
-    validation = articlesDatabase.insert(req.body);
-    if (validation === true) {
-      return res.redirect(`/articles`);
-    }
-  }
-  return res.render(`templates/articles/new`, { error: validation });
+  return validateArticleForInsert(req.body)
+  .then((article) => {
+    return knex(`articles`).insert(article);
+  })
+  .then((insertedArticle) => {
+    return res.redirect(`/articles`);
+  })
+  .catch((err) => {
+    return res.render(`templates/articles/new`, { error: err.message });
+  });
 })
 .put(`/:title`, (req, res) => {
-  let article;
-  if (article = articlesDatabase.getByKey(`title`, req.params.title)) {
-    req.body.currentTitle = req.params.title;
-    let validation = isArticleValidForEdit(req.body);
-    if (validation === true) {
-      validation = articlesDatabase.edit(req.body);
-      if (validation === true) {
-        return res.redirect(`/articles/${req.body.title}`);
-      }
+  return validateArticleForEdit(req.body)
+  .then((article) => {
+    return knex(`articles`).update(article).where(`title`, req.params.title).returning(`title`);
+  })
+  .then((result) => {
+    if (result) {
+      return res.redirect(`/articles/${result[0]}`);
+    } else {
+      return res.status(404).render(`templates/404`);
     }
-    article.error = validation;
-    return res.render(`templates/articles/edit`, article);
-  }
-  return res.status(404).render(`templates/404`);
+  })
+  .catch((err) => {
+    return findArticle(req.params.title)
+    .then((article) => {
+      article.error = err.message;
+      return res.render(`templates/articles/edit`, article);
+    })
+    .catch((err) => {
+      return res.status(400).json({ message: err.message });
+    });
+  });
 })
 .delete(`/:title`, (req, res) => {
-  if (articlesDatabase.remove(req.params.title)) {
-    return res.redirect(`/articles`);
-  }
-  return res.status(404).render(`templates/404`);
+  knex(`articles`).delete().where(`title`, req.params.title)
+  .then((result) => {
+    if (result) {
+      return res.redirect(`/articles`);
+    } else {
+      return res.status(404).render(`templates/404`);
+    }
+  })
+  .catch((err) => {
+    return res.status(400).json({ message: err.message });
+  });
 });

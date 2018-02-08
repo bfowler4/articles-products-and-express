@@ -10,7 +10,6 @@ const handlebars = exphbs.create({
   extname: `.hbs`,
   helpers: {
     doLyrics: () => { 
-
      server.locals.lyrics = lyrics[Math.floor(Math.random() * lyrics.length)];
     }
   }
@@ -25,6 +24,7 @@ server.engine(`.hbs`, handlebars.engine);
 server.set(`view engine`, `.hbs`);
 server.use(logRequest);
 server.use(bodyParser.urlencoded({ extended: true }));
+server.locals.lyrics = lyrics[Math.floor(Math.random() * lyrics.length)];
 
 server.use(`/products/:id`, methodOverride(`_method`));
 

@@ -1,11 +1,14 @@
 const logRequest = require(`./requestLogger`);
-const { isArticleValidForEdit, isArticleValidForInsert } = require(`./articleValidation`);
-const { isProductValidForInsert, isProductValidForEdit } = require(`./productValidation`);
+const { validateArticleForEdit, validateArticleForInsert } = require(`./articleValidation`);
+const { validateProductForInsert, validateProductForEdit } = require(`./productValidation`);
+const { findArticle, findProduct } = require(`./databaseFinder`);
 
 module.exports = {
   logRequest,
-  isArticleValidForEdit,
-  isArticleValidForInsert,
-  isProductValidForEdit,
-  isProductValidForInsert
+  validateArticleForEdit,
+  validateArticleForInsert,
+  validateProductForEdit,
+  validateProductForInsert,
+  findArticle,
+  findProduct
 };

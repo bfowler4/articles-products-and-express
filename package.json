@@ -12,6 +12,8 @@
   "dependencies": {
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
-    "method-override": "^2.3.10"
+    "knex": "^0.14.2",
+    "method-override": "^2.3.10",
+    "pg": "^7.4.1"
   }
 }
