@@ -56,3 +56,16 @@ router.get(`/`, (req, res) => {
   }
   return res.status(404).render(`templates/404`);
 });
+
+
+
+
+
+function getById(id) {
+  for (let product of productList) {
+    if (product.id === id) {
+      return product;
+    }
+  }
+  return `error`;
+}

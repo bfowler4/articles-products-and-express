@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <link rel='stylesheet' href='/css/styles.css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <title>CMS</title>
 </head>
+
 <body>
   {{{body}}}
+
+  <div id='banner'>
+    <div class='banner_img'>
+      <img src='/resources/mchammer.gif'>
+      <img src='/resources/mchammer.gif'>
+      <img src='/resources/mchammer.gif'>
+    </div>
+    <div>
+      {{#doLyrics}}{{/doLyrics}}
+      <p class='lyrics'>"{{lyrics.lyrics}}"</p>
+      <p class='lyric_description'>
+        -{{lyrics.artist}}
+        <br> '{{lyrics.title}}', {{lyrics.date}}
+      </p>
+    </div>
+  </div>
 </body>
+
 </html>

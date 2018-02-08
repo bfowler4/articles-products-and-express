@@ -1,12 +1,15 @@
 <form action='/products/{{id}}?_method=PUT' method='post'>
   ID: {{id}}<br>
-  Name: <input name='name' value={{name}}><br>
-  Price: <input name='price' value={{price}}><br>
-  Inventory: <input name='inventory' value={{inventory}}><br>
+  Name: <input type='text' name='name' value={{name}}><br>
+  Price: <input type='text' name='price' value={{price}}><br>
+  Inventory: <input type='text' name='inventory' value={{inventory}}><br>
   <input type='hidden' name='id' value={{id}}>
   <input type='submit' value='Submit'>
 </form>
 
 {{#if error}} 
-  <p>{{error}}</p>
+  <div class='error_banner'>
+    <img class='error_img' src='/resources/drudgesiren.gif'>
+    <p>{{error}}</p>
+  </div>
 {{/if}}

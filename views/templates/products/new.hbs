@@ -1,10 +1,13 @@
 <form action='/products' method='post'>
-  Name: <input name='name'><br>
-  Price: <input name='price'><br>
-  Inventory: <input name='inventory'><br>
+  Name: <input type='text' name='name'><br>
+  Price: <input type='text' name='price'><br>
+  Inventory: <input type='text' name='inventory'><br>
   <input type='submit' value='Submit'>
 </form>
 
-{{#if error}}
-  <p>{{error}}</p>
+{{#if error}} 
+  <div class='error_banner'>
+    <img class='error_img' src='/resources/drudgesiren.gif'>
+    <p>{{error}}</p>
+  </div>
 {{/if}}

@@ -1,10 +1,13 @@
 <form action='/articles' method='post'>
-  Title: <input name='title'><br>
-  Author: <input name='author'><br>
-  Body: <input name='body'><br>
+  Title: <input type='text' name='title'><br>
+  Author: <input type='text' name='author'><br>
+  Body: <input type='text' name='body'><br>
   <input type='submit' value='Submit'>
 </form>
 
-{{#if error}}
-  <p>{{error}}</p>
+{{#if error}} 
+  <div class='error_banner'>
+    <img class='error_img' src='/resources/drudgesiren.gif'>
+    <p>{{error}}</p>
+  </div>
 {{/if}}

@@ -1,0 +1,90 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-image: url('../resources/microfab.gif');
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  animation-duration: 800ms;
+  animation-name: tgle;
+  animation-iteration-count: infinite; 
+
+  background-image: -webkit-gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22) );
+  background-image: gradient( linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22) );
+  color:transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+
+form {
+  color: yellow;
+  display: inline;
+}
+
+li {
+  color: yellow;
+}
+
+a {
+  text-decoration: none;
+}
+
+input[type=text] {
+  background-image: url('../resources/flames.gif');
+  background-size: contain;
+  color: blue;
+  font-size: 20px;
+}
+
+.resource_list {
+  background-image: url('../resources/stars.gif');
+}
+
+#banner {
+  display: flex;
+  background-color: purple;
+  color: pink;
+}
+
+.error_banner {
+  background-color: red;
+}
+
+.error_img {
+  animation-duration: 800ms;
+  animation-name: tgle;
+  animation-iteration-count: infinite; 
+}
+
+.banner_img {
+  display: flex;
+  width: 200px;
+  height: 100px;
+}
+
+.lyric_description {
+  font-style: italic;
+}
+
+@keyframes tgle {
+  0% {
+    opacity: 0;
+  }
+
+  49.99% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+
+  99.99% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

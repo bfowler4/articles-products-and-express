@@ -1,17 +1,33 @@
-<h1>Articles List</h1>
-
-<ol class='article_list'>
-  {{#each data}}
-  <li>{{title}}
-    <a href='http://localhost:8080/articles/{{title}}/edit'><button>edit</button></a>
-    <form action="/articles/{{title}}?_method=DELETE" method='post'>
-    <input type="submit" value="delete"/>
-    </form>
-  </li>
-  <ul>
-    <li>Author: {{author}}</li>
-    <li>URL: {{urlTitle}}</li>
-    <li>{{body}}</li>
-  </ul>
-  {{/each}}
-</ol>
+<div class='resource_list'>
+  <h1>
+  <FONT COLOR="#FF0000">A</FONT>
+  <FONT COLOR="#FF5A00">R</FONT>
+  <FONT COLOR="#FFB400">T</FONT>
+  <FONT COLOR="#FFff00">I</FONT>
+  <FONT COLOR="#A5ff00">C</FONT>
+  <FONT COLOR="#4Bff00">L</FONT>
+  <FONT COLOR="#00ff00">E</FONT>
+  <FONT COLOR="#00ff5A">L</FONT>
+  <blink>
+    <FONT COLOR="#00ffB4">I</FONT>
+    <FONT COLOR="#00ffff">S</FONT>
+    <FONT COLOR="#00B4ff">T</FONT>
+</h1>
+  <ol class='article_list'>
+    {{#each data}}
+    <li>{{title}}
+      <a href='http://localhost:8080/articles/{{title}}/edit'>
+        <button>edit</button>
+      </a>
+      <form action="/articles/{{title}}?_method=DELETE" method='post'>
+        <input type="submit" value="delete" />
+      </form>
+    </li>
+    <ul>
+      <li>Author: {{author}}</li>
+      <li>URL: {{urlTitle}}</li>
+      <li>{{body}}</li>
+    </ul>
+    {{/each}}
+  </ol>
+</div>

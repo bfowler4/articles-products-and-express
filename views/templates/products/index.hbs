@@ -1,16 +1,33 @@
-<h1>Product List</h1>
-
-<ol class='product_list'>
-  {{#each data}}
+<div class='resource_list'>
+  <h1>
+    <FONT COLOR="#FF0000">P</FONT>
+    <FONT COLOR="#FF5A00">R</FONT>
+    <FONT COLOR="#FFB400">O</FONT>
+    <FONT COLOR="#FFff00">D</FONT>
+    <FONT COLOR="#A5ff00">U</FONT>
+    <FONT COLOR="#4Bff00">C</FONT>
+    <FONT COLOR="#00ff00">T</FONT>
+    <FONT COLOR="#00ff5A">L</FONT>
+    <blink>
+      <FONT COLOR="#00ffB4">I</FONT>
+      <FONT COLOR="#00ffff">S</FONT>
+      <FONT COLOR="#00B4ff">T</FONT>
+  </h1>
+  <ol class='product_list'>
+    {{#each data}}
     <li>{{name}}
-      <a href='http://localhost:8080/products/{{id}}/edit'><button>edit</button></a>
-      <form action="/products/{{id}}?_method=DELETE" method='post'>
-      <input type="submit" value="delete"/>
+      <a href='http://localhost:8080/products/{{id}}/edit'>
+        <button>edit</button>
+      </a>
+      <form class='delete_form' action="/products/{{id}}?_method=DELETE" method='post'>
+        <input type="submit" value="delete" />
+      </form>
     </li>
     <ul>
       <li>ID: {{id}}</li>
       <li>Price: {{price}}</li>
       <li>Inventory: {{inventory}}</li>
     </ul>
-  {{/each}}
-</ol>
+    {{/each}}
+  </ol>
+</div>
